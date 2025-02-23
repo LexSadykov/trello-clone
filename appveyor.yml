@@ -1,0 +1,28 @@
+version: 1.0.{build}
+
+image: Visual Studio 2019
+
+environment:
+  node_version: "14" 
+  cache:
+    - node_modules
+
+install:
+  - ps: Install-Product node $env:node_version
+  - npm install -g yarn
+  - yarn install 
+
+build:
+  project: ./webpack.config.js
+
+artifacts:
+  - path: dist/**/*  
+    name: dist
+
+deploy:
+  - provider: GitHubPages
+    branch: master
+    repo: https://github.com/LexSadykov/trello-clone.git  
+    skip_cleanup: true
+    on:
+      branch: master
